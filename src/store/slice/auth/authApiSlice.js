@@ -1,11 +1,11 @@
 
 import { api } from "../../baseApi";
-import { clearAuth, setAuth } from "../features/auth/authSlice";
+import { clearAuth, setAuth } from "./authSlice";
 
 export const authApi = api.injectEndpoints({
   endpoints: (b) => ({
     signUp: b.mutation({
-      query: (payload) => ({ url: "/auth/register", method: "POST", body: payload }),
+      query: (payload) => ({ url: "/auth/sign-up", method: "POST", body: payload }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -18,7 +18,7 @@ export const authApi = api.injectEndpoints({
     }),
 
     signIn: b.mutation({
-      query: (payload) => ({ url: "/auth/login", method: "POST", body: payload }),
+      query: (payload) => ({ url: "/auth/sign-in", method: "POST", body: payload }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -30,7 +30,7 @@ export const authApi = api.injectEndpoints({
 
     signOut: b.mutation({
       // If your backend doesn't have /auth/logout, keep it but ignore network errors.
-      query: () => ({ url: "/auth/logout", method: "POST" }),
+      query: () => ({ url: "/auth/sign-out", method: "POST" }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try { await queryFulfilled; } catch {}
         // Always clear local auth state

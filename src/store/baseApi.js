@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { clearAuth, setAuth } from "./slice/auth/authSlice";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://localhost:8000/api/v1"; // Change to your API base URL
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
