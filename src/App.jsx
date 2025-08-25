@@ -1,10 +1,9 @@
 import "./App.css";
-import SignUpForm from "./pages/SignUpForm";
 
 function App() {
   return (
     <>
-      <SignUpForm />
+    <h1>hello</h1>
     </>
   );
 }
