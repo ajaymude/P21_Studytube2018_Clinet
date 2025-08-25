@@ -44,7 +44,9 @@ export const authApi = api.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-        } catch {}
+        } catch (err) {
+          console.error("SignUp failed:", err);
+        }
         dispatch(clearUserData());
       },
     }),
@@ -55,7 +57,7 @@ export const authApi = api.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setUserData({ user: data })); // store user shape in slice (optional)
+          dispatch(setUserData({ user: data }));
         } catch (err) {
           console.error("SignUp failed:", err);
         }
