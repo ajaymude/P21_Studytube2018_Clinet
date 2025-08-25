@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSignUpMutation } from "./authApi"; // adjust path
+import { useSignUpMutation } from "../store/slice/auth/authApiSlice";
 
 export default function SignUpForm() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });

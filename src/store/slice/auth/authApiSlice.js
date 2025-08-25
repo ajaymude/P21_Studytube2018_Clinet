@@ -1,54 +1,64 @@
-
 import { api } from "../../baseApi";
-import { clearAuth, setAuth } from "./authSlice";
+import { setUserData, clearUserData } from "./authSlice";
 
 export const authApi = api.injectEndpoints({
-  endpoints: (b) => ({
-    signUp: b.mutation({
-      query: (payload) => ({ url: "/auth/sign-up", method: "POST", body: payload }),
+  endpoints: (builder) => ({
+    signUp: builder.mutation({
+      query: (payload) => ({
+        url: "/auth/sign-up",
+        method: "POST",
+        body: payload,
+      }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          // Save tokens + user
-          dispatch(setAuth({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }));
-          // Prime the /auth/me cache
-          dispatch(authApi.util.updateQueryData("getMe", undefined, () => data.user));
-        } catch {}
+          dispatch(setUserData({ user: data }));
+        } catch (err) {
+          console.error("SignUp failed:", err);
+        }
       },
     }),
 
-    signIn: b.mutation({
-      query: (payload) => ({ url: "/auth/sign-in", method: "POST", body: payload }),
+    signIn: builder.mutation({
+      query: (payload) => ({
+        url: "/auth/sign-in",
+        method: "POST",
+        body: payload,
+      }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setAuth({ user: data.user, accessToken: data.accessToken, refreshToken: data.refreshToken }));
-          dispatch(authApi.util.updateQueryData("getMe", undefined, () => data.user));
-        } catch {}
+          dispatch(
+            setUserData({
+              user: data,
+            })
+          );
+        } catch (err) {
+          console.error("SignUp failed:", err);
+        }
       },
     }),
 
-    signOut: b.mutation({
-      // If your backend doesn't have /auth/logout, keep it but ignore network errors.
+    signOut: builder.mutation({
       query: () => ({ url: "/auth/sign-out", method: "POST" }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try { await queryFulfilled; } catch {}
-        // Always clear local auth state
-        dispatch(clearAuth());
-        // Invalidate user cache
-        dispatch(authApi.util.invalidateTags(["Me"]));
+        try {
+          await queryFulfilled;
+        } catch {}
+        dispatch(clearUserData());
       },
     }),
 
-    getMe: b.query({
+    getMe: builder.query({
       query: () => ({ url: "/auth/me", method: "GET" }),
       providesTags: ["Me"],
-      // If you also want to keep user in slice for easy access:
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setAuth({ user: data })); // store user shape in slice (optional)
-        } catch {}
+          dispatch(setUserData({ user: data })); // store user shape in slice (optional)
+        } catch (err) {
+          console.error("SignUp failed:", err);
+        }
       },
     }),
   }),

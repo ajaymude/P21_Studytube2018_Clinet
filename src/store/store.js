@@ -5,8 +5,8 @@ import { api } from "./baseApi";
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,                     // client-only auth state (tokens, user stub)
-    [api.reducerPath]: api.reducer,        // RTKQ cache
+    auth: authReducer,                     
+    [api.reducerPath]: api.reducer,  
   },
   middleware: (gdm) => gdm().concat(api.middleware),
   devTools: true,

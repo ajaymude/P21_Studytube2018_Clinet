@@ -1,10 +1,10 @@
 import "./App.css";
-import AuthPanel from "./pages/AuthPanel";
+import SignUpForm from "./pages/SignUpForm";
 
 function App() {
   return (
     <>
-      <AuthPanel />
+      <SignUpForm />
     </>
   );
 }
